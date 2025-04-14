@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { Provider } from "react-redux";
+import { rootStore } from "./store/rootStore";
+import { Routes } from "./components/routes/Routes";
 import "./style.css";
 
 export function App(){
-    return <div className="app_wrapper">
-    </div>
+    return <Provider store={rootStore}>
+        <div className="app_wrapper">
+            <Routes></Routes>
+        </div>
+    </Provider>
 }
