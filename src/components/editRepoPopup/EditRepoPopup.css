@@ -1,0 +1,86 @@
+.EditRepoPopup_shadow{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0009;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.EditRepoPopup{
+    padding: 10px 10px;
+    padding-top: 0;
+    background-color: #1a1a1a;
+    border: 4px solid #4a4af7;
+    border-radius: 15px;
+    letter-spacing: 1px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 0px;
+    width: calc(100% - 40px);
+    max-width: 440px;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.EditRepoPopup_title{
+    padding: 10px 30px;
+    background: linear-gradient(90deg, #4a4af7, #6b6bff);
+    border-radius: 0 0 15px 15px;
+    letter-spacing: 1px;
+    font-size: 16px;
+    user-select: none;
+}
+
+.EditRepoPopup_form{
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+}
+
+.EditRepoPopup_form_block{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #585899;
+    border-radius: 15px;
+    padding: 10px;
+    padding-top: 0px;
+}
+
+.EditRepoPopup_form_block_title{
+    width: fit-content;
+    padding: 0px 5px;
+    background-color: #1a1a1a;
+    position: relative;
+    left: -5px;
+    top: -6px;
+    height: 10px;
+    line-height: 10px;
+    font-size: 12px;
+    color: #585899;
+}
+
+.EditRepoPopup_form_block_input{
+    background-color: #2220;
+    border: none;
+    resize: none;
+    padding: 0px;
+    font-size: 15px;
+    border-radius: 7px;
+    color: #9797ff;
+}
+
+.EditRepoPopup_form_block_input:focus{
+    outline: none;
+}
+
+.EditRepoPopup_actionList{
+    display: flex;
+}

@@ -22,20 +22,28 @@ export const MainPage = ()=>{
         }
     }, [userInfo]);
     return <div className="MainPage">
-        main
-        <button onClick={()=>{
-            //dispatch(githubAuthSlice.actions.logout());
-            setShowEditRepoPopup(true);
-            setEditRepoItem(null);
-        }}>create new repo</button>
-
-        <button onClick={()=>{
-            dispatch(githubAuthSlice.actions.logout());
-            dispatch(routesSlice.actions.navigate('auth'));
-        }}>logout</button>
-
+        <div className="MainPage_header">
+            <div className="MainPage_userData">
+                <div className="MainPage_userAvatar" style={{backgroundImage: `url(${userInfo.avatar_url})`}}></div>
+                <div className="MainPage_userLogin">
+                    {userInfo.login}
+                </div>
+            </div>
+            <button className="MainPage_logout" onClick={()=>{
+                dispatch(githubAuthSlice.actions.logout());
+                dispatch(routesSlice.actions.navigate('auth'));
+            }}>logout</button>
+        </div>
         
-        {repos && <div>{repos.map((repo: Array<any>)=><RepoItem 
+        <div className="MainPage_controls">
+            <button className="MainPage_createRepo" onClick={()=>{
+                //dispatch(githubAuthSlice.actions.logout());
+                setShowEditRepoPopup(true);
+                setEditRepoItem(null);
+            }}>Create repo</button>
+        </div>
+
+        {repos && <div className="MainPage_repoList">{repos.map((repo: Array<any>)=><RepoItem 
             repo={repo}
             onEdit={()=>{
                 setShowEditRepoPopup(true);

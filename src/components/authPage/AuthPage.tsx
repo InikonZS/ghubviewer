@@ -16,20 +16,22 @@ export const AuthPage = ()=>{
     }, [userInfo]);
 
     return <div className="AuthPage">
-        <div>
-            Auth github
-        </div>
-        {userInfo && <div>{JSON.stringify(userInfo)}</div>}
-        {authError &&  <div>{authError}</div>}
-        {loading && <div>loading...</div>}
-        <div>
-            <form onSubmit={(e)=>{
-                e.preventDefault();
-                dispatch(authGithubByPersonalToken(tokenValue))
-            }}>
-                <input value={tokenValue} onChange={(e)=>setTokenValue(e.target.value)} />
-                <button type="submit">Auth</button>
-            </form>
+        <div className="AuthPage_content_wrap">
+            <div className="AuthPage_content">
+                <div className="AuthPage_title">
+                    Auth github
+                </div>
+                {userInfo && <div>{JSON.stringify(userInfo)}</div>}
+                {authError && <div className="AuthPage_error">{authError}</div>}
+                {loading && <div className="AuthPage_loading">loading...</div>}
+                <form className="AuthPage_form" onSubmit={(e)=>{
+                    e.preventDefault();
+                    dispatch(authGithubByPersonalToken(tokenValue))
+                }}>
+                    <input className="AuthPage_input" value={tokenValue} onChange={(e)=>setTokenValue(e.target.value)} />
+                    <button className="AuthPage_submit" type="submit">Auth</button>
+                </form>
+            </div>
         </div>
     </div>
 }

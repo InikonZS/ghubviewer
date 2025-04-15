@@ -1,3 +1,82 @@
 .MainPage{
-    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.MainPage_repoList{
+    display: flex;
+    flex-direction: column;
+    max-width: 638px;
+    width: 100%;
+}
+
+.MainPage_createRepo{
+    padding: 10px 15px;
+    border: none;
+    background: linear-gradient(90deg, #2c2cd3, #6b6bff);
+    background-size: calc(200%);
+    border-radius: 0;
+    transition-property: background;
+    transition-duration: 400ms;
+    background-position: 0%;
+    letter-spacing: 1px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 11px;
+}
+
+.MainPage_logout{
+    padding: 8px 15px;
+    border: none;
+    background: linear-gradient(90deg, #2c2cd3, #6b6bff);
+    background-size: calc(200%);
+    border-radius: 0;
+    transition-property: background;
+    transition-duration: 400ms;
+    background-position: 0%;
+    letter-spacing: 1px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 0 0 0 11px
+}
+
+.MainPage_controls{
+    display: flex;
+    width: 100%;
+    max-width: 638px;
+    margin-bottom: 10px;
+}
+
+.MainPage_header{
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 760px;
+    margin-bottom: 10px;
+    width: 100%;
+    background-color: /*#1a1a1a*/#0000;
+    border: 3px solid #2f2f70;
+    border-radius: 0 0 15px 15px;
+    border-top: none;
+    padding: 0px 0px;
+}
+
+.MainPage_userAvatar{
+    width: 42px;
+    height: 42px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 100%;
+}
+
+.MainPage_userData{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
 }
