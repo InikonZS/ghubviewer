@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/rootStore";
 import { githubAuthSlice } from "../../store/githubAuthSlice";
-import { createRepo, getUserRepos } from "../../store/githubReposSlice";
+import { createRepo, deleteRepo, getUserRepos, updateRepo } from "../../store/githubReposSlice";
 import { routesSlice } from "../../store/routesSlice";
 import { RepoItem } from "../repoItem/RepoItem";
 import { EditRepoPopup } from "../editRepoPopup/EditRepoPopup";
@@ -49,14 +49,19 @@ export const MainPage = ()=>{
         {reposError &&  <div>{reposError}</div>}
         {reposLoading && <div>loading repos...</div>}
         {showEditRepoPopup && <EditRepoPopup 
+            repoData={editRepoItem}
             onClose={()=>setShowEditRepoPopup(false)} 
             onSave={(data)=>{
-                dispatch(createRepo({token, data}));
+                if (editRepoItem){
+                    dispatch(updateRepo({token, owner: editRepoItem.owner.login, data}));
+                } else {
+                    dispatch(createRepo({token, data}));
+                }
             }}
         ></EditRepoPopup>}
         {showConfirmDeletePopup && <div>
             <button onClick={()=>{
-                //
+                dispatch(deleteRepo({token, owner: editRepoItem.owner.login, data: editRepoItem}));
             }}>ok</button>
             <button onClick={()=>{
                 setShowConfirmDeletePopup(false)

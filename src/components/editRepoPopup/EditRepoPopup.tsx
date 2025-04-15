@@ -1,16 +1,28 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import "./EditRepoPopup.css";
 
 interface IEditRepoPopupProps{
     onClose: ()=>void,
-    onSave: (data: any)=>void
+    onSave: (data: any)=>void,
+    repoData?: any
 }
 
-export const EditRepoPopup = ({onClose, onSave}: IEditRepoPopupProps)=>{
+export const EditRepoPopup = ({onClose, onSave, repoData}: IEditRepoPopupProps)=>{
     const [repoName, setRepoName] = useState('');
     const [repoDescription, setRepoDescription] = useState('');
     const  [isPrivate, setIsPrivate] = useState(false);
+    
+    useEffect(()=>{
+        if (!repoData){
+            return;
+        }
+        setRepoName(repoData.name);
+        setRepoDescription(repoData.description);
+        setIsPrivate(repoData.private);
+    }, [repoData]);
+
     return <div className="EditRepoPopup">
+        <div>{repoData ? "edit repo" : "add repo"}</div>
         <div>
             <div>
                 <span>name</span>

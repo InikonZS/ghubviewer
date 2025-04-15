@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { sendCreateRepo } from "../api/github";
+import { sendCreateRepo, sendDeleteRepo, sendUpdateRepo } from "../api/github";
 
 export const githubReposSlice = createSlice({
     name: 'counter',
@@ -10,6 +10,16 @@ export const githubReposSlice = createSlice({
             loading: false
         },
         createRepo: {
+            response: null,
+            error: null,
+            loading: false
+        },
+        updateRepo: {
+            response: null,
+            error: null,
+            loading: false
+        },
+        deleteRepo: {
             response: null,
             error: null,
             loading: false
@@ -51,6 +61,41 @@ export const githubReposSlice = createSlice({
             state.createRepo.error = null;
             state.createRepo.loading = true;
         });
+
+        
+        builder.addCase(deleteRepo.fulfilled, (state, action) => {
+            state.deleteRepo.response = action.payload;
+            state.getUserRepos.repos = state.getUserRepos.repos.filter((it: any)=>it.name != action.meta.arg.data.name);
+            state.deleteRepo.error = null;
+            state.deleteRepo.loading = false;
+        });
+        builder.addCase(deleteRepo.rejected, (state, action) => {
+            state.deleteRepo.response = null;
+            state.deleteRepo.error = action.error.message;
+            state.deleteRepo.loading = false;
+        });
+        builder.addCase(deleteRepo.pending, (state, action) => {
+            state.deleteRepo.response = null;
+            state.deleteRepo.error = null;
+            state.deleteRepo.loading = true;
+        });
+
+        builder.addCase(updateRepo.fulfilled, (state, action) => {
+            state.updateRepo.response = action.payload;
+            state.getUserRepos.repos = state.getUserRepos.repos.map((it: any)=>it.name == action.payload.name ? action.payload : it);
+            state.updateRepo.error = null;
+            state.updateRepo.loading = false;
+        });
+        builder.addCase(updateRepo.rejected, (state, action) => {
+            state.updateRepo.response = null;
+            state.updateRepo.error = action.error.message;
+            state.updateRepo.loading = false;
+        });
+        builder.addCase(updateRepo.pending, (state, action) => {
+            state.updateRepo.response = null;
+            state.updateRepo.error = null;
+            state.updateRepo.loading = true;
+        });
     }
 });
 
@@ -82,3 +127,26 @@ export const createRepo = createAsyncThunk('github/createRepo', async (data: {to
     console.log(error.message)
     throw new Error(error.message);
 });
+
+export const updateRepo = createAsyncThunk('github/updateRepo', async (data: {token: string, owner: string, data: any}) => {
+    const response = await sendUpdateRepo(data.token, data.owner, data.data)
+    if (response.ok) {
+        return await response.json();
+    }
+
+    const error = await response.json();
+    console.log(error.message)
+    throw new Error(error.message);
+});
+
+export const deleteRepo = createAsyncThunk('github/deleteRepo', async (data: {token: string, owner: string, data: any}) => {
+    const response = await sendDeleteRepo(data.token, data.owner, data.data)
+    if (response.ok) {
+        return;
+    }
+
+    const error = await response.json();
+    console.log(error.message)
+    throw new Error(error.message);
+});
+
