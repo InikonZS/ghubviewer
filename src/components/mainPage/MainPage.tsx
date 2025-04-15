@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/rootStore";
 import { githubAuthSlice } from "../../store/githubAuthSlice";
-import { getUserRepos } from "../../store/githubReposSlice";
+import { createRepo, getUserRepos } from "../../store/githubReposSlice";
 import { routesSlice } from "../../store/routesSlice";
 import { RepoItem } from "../repoItem/RepoItem";
 import { EditRepoPopup } from "../editRepoPopup/EditRepoPopup";
@@ -10,7 +10,7 @@ import "./MainPage.css";
 export const MainPage = ()=>{
     const dispatch = useAppDispatch();
     const {userInfo, authError, loading, token} = useAppSelector(state=>state.githubAuth);
-    const {repos, error: reposError, loading: reposLoading} = useAppSelector(state=>state.githubRepos);
+    const {repos, error: reposError, loading: reposLoading} = useAppSelector(state=>state.githubRepos.getUserRepos);
     const [editRepoItem, setEditRepoItem] = useState<any>(null);
     const [showEditRepoPopup, setShowEditRepoPopup] = useState<boolean>(false);
     const [showConfirmDeletePopup, setShowConfirmDeletePopup] = useState<boolean>(false);
@@ -50,7 +50,9 @@ export const MainPage = ()=>{
         {reposLoading && <div>loading repos...</div>}
         {showEditRepoPopup && <EditRepoPopup 
             onClose={()=>setShowEditRepoPopup(false)} 
-            onSave={()=>{}}
+            onSave={(data)=>{
+                dispatch(createRepo({token, data}));
+            }}
         ></EditRepoPopup>}
         {showConfirmDeletePopup && <div>
             <button onClick={()=>{
