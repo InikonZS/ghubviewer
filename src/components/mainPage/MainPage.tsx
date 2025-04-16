@@ -66,7 +66,7 @@ export const MainPage = ()=>{
                 if (editRepoItem){
                     dispatch(updateRepo({token, owner: editRepoItem.owner.login, data}));
                 } else {
-                    dispatch(createRepo({token, data}));
+                    dispatch(createRepo({token, owner: userInfo.login, data}));
                 }
             }}
         ></EditRepoPopup>}
@@ -74,6 +74,7 @@ export const MainPage = ()=>{
             repoData={editRepoItem} 
             onOk={()=>{
                 dispatch(deleteRepo({token, owner: editRepoItem.owner.login, data: editRepoItem}));
+                setShowConfirmDeletePopup(false);
                 }
             }
             onClose={()=>{

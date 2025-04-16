@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { MainButton } from "../common/Common";
 import { IRepoData } from "../../types/repo";
+import { useAppDispatch } from "../../store/rootStore";
+import { githubReposSlice } from "../../store/githubReposSlice";
 import "./RepoItem.css";
 
 interface IRepoItemProps {
@@ -10,7 +12,21 @@ interface IRepoItemProps {
 }
 
 export const RepoItem = ({repo, onDelete, onEdit}: IRepoItemProps)=>{
-    return <div className="RepoItem">
+    const dispatch = useAppDispatch();
+    useEffect(()=>{
+        if (['ready', 'deletePending', 'updatePending', 'createPending'].includes(repo.clientStatus)){
+            return
+        }
+        const tid = setTimeout(()=>{
+            dispatch(githubReposSlice.actions.confirmRepoOperation(repo.name));
+        }, 5000);
+        return ()=>{
+            clearTimeout(tid);
+        }
+    }, [repo.clientStatus]);
+    return <div className={`RepoItem_collapser RepoItem_status--${repo.clientStatus}`}>
+        <div className={`RepoItem`}>
+        <div className="RepoItem_statusBlock">{repo.clientStatus}</div>
         <div className="RepoItem_repoInfo">
             <h3 className="RepoItem_name">
                 <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
@@ -41,4 +57,5 @@ export const RepoItem = ({repo, onDelete, onEdit}: IRepoItemProps)=>{
             }}>Delete</MainButton>
         </div>
     </div>
+    </div> 
 }

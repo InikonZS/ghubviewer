@@ -1,4 +1,4 @@
-export const sendCreateRepo = async (token:string, data: {name: string, description: string, private: boolean}) => {
+export const sendCreateRepo = async (token:string, owner: string, data: {name: string, description: string, private: boolean}) => {
     const response = await fetch('https://api.github.com/user/repos', {
         method: 'POST',
         headers: {
