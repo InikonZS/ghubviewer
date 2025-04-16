@@ -32,6 +32,18 @@ export const AuthPage = ()=>{
                     <button className="AuthPage_submit" type="submit">Auth</button>
                 </form>
             </div>
+            <div className="AuthPage_help">
+                <p>Github api auth working with Personal access token.</p>
+                <p>How to generate Personal access token on GitHub</p>
+                <ul>
+                    <li>Visit GitHub and open Settings - Developer settings</li>
+                    <li>Select “Generate token”</li>
+                    <li>Choose “Generate new token (classic)”</li>
+                    <li>Enable the following settings: repo. admin:repo_hook.</li>
+                    <li>Save settings.</li>
+                    <li>Copy the generated token.</li>
+                </ul>
+            </div>
         </div>
     </div>
 }
