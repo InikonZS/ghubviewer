@@ -1,4 +1,5 @@
-import React from "react"
+import React from "react";
+import { MainButton } from "../common/Common";
 import "./RepoItem.css";
 
 interface IRepoItemProps {
@@ -31,12 +32,12 @@ export const RepoItem = ({repo, onDelete, onEdit}: IRepoItemProps)=>{
             </div>
         </div>
         <div className="RepoItem_actionList">
-            <button className="RepoItem_action" onClick={()=>{
+            <MainButton className="RepoItem_action" onClick={()=>{
                 onEdit()
-            }}>Edit</button>
-            <button className="RepoItem_action" onClick={()=>{
+            }}>Edit</MainButton>
+            <MainButton className="RepoItem_action" onClick={()=>{
                 onDelete()
-            }}>Delete</button>
+            }}>Delete</MainButton>
         </div>
     </div>
 }

@@ -1,0 +1,25 @@
+.DeleteRepoPopup_actionList{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.DeleteRepoPopup{
+    transition-duration: 400ms;
+    transition-timing-function: linear;
+}
+
+.DeleteRepoPopup_states--initial .DeleteRepoPopup{
+    opacity: 0;
+    transform: scale(4);
+}
+
+.DeleteRepoPopup_states--fadeIn .DeleteRepoPopup{
+    opacity: 1;
+    transform: scale(1);
+}
+
+.DeleteRepoPopup_states--fadeOut .DeleteRepoPopup{
+    opacity: 0;
+    transform: scale(4);
+}

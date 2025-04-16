@@ -5,6 +5,7 @@ import { createRepo, deleteRepo, getUserRepos, updateRepo } from "../../store/gi
 import { routesSlice } from "../../store/routesSlice";
 import { RepoItem } from "../repoItem/RepoItem";
 import { EditRepoPopup } from "../editRepoPopup/EditRepoPopup";
+import { DeleteRepoPopup } from "../deleteRepoPopup/DeleteRepoPopup";
 import "./MainPage.css";
 
 export const MainPage = ()=>{
@@ -43,7 +44,8 @@ export const MainPage = ()=>{
             }}>Create repo</button>
         </div>
 
-        {repos && <div className="MainPage_repoList">{repos.map((repo: Array<any>)=><RepoItem 
+        {repos && <div className="MainPage_repoList">{repos.map((repo: any)=><RepoItem 
+            key={repo.name}
             repo={repo}
             onEdit={()=>{
                 setShowEditRepoPopup(true);
@@ -67,13 +69,16 @@ export const MainPage = ()=>{
                 }
             }}
         ></EditRepoPopup>}
-        {showConfirmDeletePopup && <div>
-            <button onClick={()=>{
+        {showConfirmDeletePopup && <DeleteRepoPopup
+            repoData={editRepoItem} 
+            onOk={()=>{
                 dispatch(deleteRepo({token, owner: editRepoItem.owner.login, data: editRepoItem}));
-            }}>ok</button>
-            <button onClick={()=>{
-                setShowConfirmDeletePopup(false)
-            }}>cancel</button>
-        </div>}
+                }
+            }
+            onClose={()=>{
+                setShowConfirmDeletePopup(false);
+                }
+            }
+        ></DeleteRepoPopup>}
     </div>
 }

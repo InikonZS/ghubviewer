@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import { MainButton, PopupShadow, PopupWrapper } from "../common/Common";
 import "./EditRepoPopup.css";
 
 interface IEditRepoPopupProps{
@@ -10,7 +11,7 @@ interface IEditRepoPopupProps{
 export const EditRepoPopup = ({onClose, onSave, repoData}: IEditRepoPopupProps)=>{
     const [repoName, setRepoName] = useState('');
     const [repoDescription, setRepoDescription] = useState('');
-    const  [isPrivate, setIsPrivate] = useState(false);
+    const [isPrivate, setIsPrivate] = useState(false);
     
     useEffect(()=>{
         if (!repoData){
@@ -21,8 +22,39 @@ export const EditRepoPopup = ({onClose, onSave, repoData}: IEditRepoPopupProps)=
         setIsPrivate(repoData.private);
     }, [repoData]);
 
-    return <div className="EditRepoPopup_shadow">
-        <div className="EditRepoPopup">
+    const [popupState, setPopupState] = useState('initial');
+    useEffect(()=>{
+        if (popupState == 'initial') {
+            setPopupState('fadeIn'); 
+        }  
+        if (popupState == 'fadeIn') {
+            setTimeout(()=>{
+                setPopupState('ready')
+            });
+        }     
+    }, [popupState]);
+
+    const handleCancel = ()=>{
+        if (popupState == 'ready'){
+            setPopupState('fadeOut');
+            setTimeout(()=>{
+                onClose();
+            }, 400);
+        }
+    }
+
+    const handleOk = (data: any)=>{
+        if (popupState == 'ready'){
+            setPopupState('fadeOut');
+            onSave(data);
+            setTimeout(()=>{
+                onClose()
+            }, 400);
+        }
+    }
+
+    return <PopupShadow className={`EditRepoPopup_shadow EditRepoPopup_states--${popupState}`}>
+        <PopupWrapper className="EditRepoPopup">
             <div className="EditRepoPopup_title">{repoData ? "edit repo" : "add repo"}</div>
             <div className="EditRepoPopup_form">
                 <div className="EditRepoPopup_form_block">
@@ -39,9 +71,9 @@ export const EditRepoPopup = ({onClose, onSave, repoData}: IEditRepoPopupProps)=
                 </div>
             </div>
             <div className="EditRepoPopup_actionList">
-                <button className="EditRepoPopup_action" onClick={()=>onClose()}>close</button>
-                <button className="EditRepoPopup_action" onClick={()=>onSave({name: repoName, description: repoDescription, private: isPrivate})}>save</button>
+                <MainButton className="EditRepoPopup_action" onClick={handleCancel}>close</MainButton>
+                <MainButton className="EditRepoPopup_action" onClick={()=>handleOk({name: repoName, description: repoDescription, private: isPrivate})}>save</MainButton>
             </div>
-        </div>
-    </div>
+        </PopupWrapper>
+    </PopupShadow>
 }
