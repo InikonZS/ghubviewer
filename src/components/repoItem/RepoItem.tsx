@@ -46,6 +46,11 @@ export const RepoItem = ({repo, onDelete, onEdit}: IRepoItemProps)=>{
                     {repo.language}
                 </span>
                 )}
+                {repo.private && (
+                    <span className="RepoItem_stat">
+                        Private
+                    </span>
+                )}
             </div>
         </div>
         <div className="RepoItem_actionList">

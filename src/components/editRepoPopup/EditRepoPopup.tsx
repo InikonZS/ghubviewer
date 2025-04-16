@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { MainButton, PopupShadow, PopupWrapper } from "../common/Common";
+import { CheckBox } from "../common/CommonCheckBox";
 import "./EditRepoPopup.css";
 import { IEditableRepoData } from "../../types/repo";
 
@@ -66,9 +67,10 @@ export const EditRepoPopup = ({onClose, onSave, repoData}: IEditRepoPopupProps)=
                     <span className="EditRepoPopup_form_block_title">description</span>
                     <textarea className="EditRepoPopup_form_block_input" style={{height: '80px'}} value={repoDescription} onChange={(e)=>{setRepoDescription(e.target.value)}}></textarea>
                 </div>
-                <div className="EditRepoPopup_form_block">
-                    <span>private</span>
-                    <button className={`${isPrivate ? '' : ''}`} onClick={()=>setIsPrivate(last=>!last)}>isPrivate</button>
+                <div className="EditRepoPopup_form_block EditRepoPopup_privateSet">
+                    <CheckBox onCheck={(value)=>{setIsPrivate(value)}} checked={isPrivate} label={
+                       <span className="EditRepoPopup_privateSet_label">Private repo</span> 
+                    }></CheckBox>
                 </div>
             </div>
             <div className="EditRepoPopup_actionList">

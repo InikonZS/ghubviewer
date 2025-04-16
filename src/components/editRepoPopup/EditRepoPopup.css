@@ -70,6 +70,20 @@
     padding-top: 0px;
 }
 
+.EditRepoPopup_privateSet{
+    border: 1px solid transparent;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+.EditRepoPopup_privateSet_label{
+    font-size: 15px;
+    color: #9797ff;
+}
+
 .EditRepoPopup_form_block_title{
     width: fit-content;
     padding: 0px 5px;
