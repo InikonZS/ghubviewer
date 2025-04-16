@@ -26,7 +26,7 @@ export const AuthPage = ()=>{
                 {loading && <div className="AuthPage_loading">loading...</div>}
                 <form className="AuthPage_form" onSubmit={(e)=>{
                     e.preventDefault();
-                    dispatch(authGithubByPersonalToken(tokenValue))
+                    dispatch(authGithubByPersonalToken({token: tokenValue, mockLogin: false}))
                 }}>
                     <input className="AuthPage_input" value={tokenValue} onChange={(e)=>setTokenValue(e.target.value)} />
                     <button className="AuthPage_submit" type="submit">Auth</button>
@@ -43,6 +43,7 @@ export const AuthPage = ()=>{
                     <li>Save settings.</li>
                     <li>Copy the generated token.</li>
                 </ul>
+                <p>Or <span className="AuthPage_mockLogin" onClick={()=>dispatch(authGithubByPersonalToken({token: tokenValue, mockLogin: true}))}>try local mock demo</span></p>
             </div>
         </div>
     </div>

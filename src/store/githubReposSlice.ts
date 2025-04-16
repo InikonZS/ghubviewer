@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { sendCreateRepo, sendDeleteRepo, sendUpdateRepo } from "../api/github";
+import { sendCreateRepo, sendDeleteRepo, sendGetRepoList, sendUpdateRepo } from "../api/github";
+import fakeApi from "../api/fakeApi";
 import { IEditableRepoData, IRepoData, IServerRepoData } from "../types/repo";
 
 const formatClientRepo = (data: IServerRepoData, status: string): IRepoData=>{
@@ -154,15 +155,8 @@ export const githubReposSlice = createSlice({
     }
 });
 
-export const getUserRepos = createAsyncThunk('github/getRepos', async (token: string) => {
-    const response = await fetch('https://api.github.com/user/repos', {
-        method: 'GET',
-        headers: {
-            'X-GitHub-Api-Version': '2022-11-28',
-            'Authorization': `token ${token}`,
-            'Content-Type': 'application/json',
-        }
-    });
+export const getUserRepos = createAsyncThunk('github/getRepos', async (data:{token: string, mock: boolean}) => {
+    const response = await (data.mock ? fakeApi.sendGetRepoList(data.token) : sendGetRepoList(data.token));
     if (response.ok) {
         return await response.json();
     }
@@ -172,8 +166,8 @@ export const getUserRepos = createAsyncThunk('github/getRepos', async (token: st
     throw new Error(error.message);
 });
 
-export const createRepo = createAsyncThunk('github/createRepo', async (data: {token: string, owner: string, data: IEditableRepoData}) => {
-    const response = await sendCreateRepo(data.token, data.owner, data.data)
+export const createRepo = createAsyncThunk('github/createRepo', async (data: {token: string, owner: string, mock: boolean, data: IEditableRepoData}) => {
+    const response = await (data.mock ? fakeApi.sendCreateRepo(data.token, data.owner, data.data) : sendCreateRepo(data.token, data.owner, data.data))
     if (response.ok) {
         return await response.json();
     }
@@ -183,8 +177,8 @@ export const createRepo = createAsyncThunk('github/createRepo', async (data: {to
     throw new Error(error.message);
 });
 
-export const updateRepo = createAsyncThunk('github/updateRepo', async (data: {token: string, owner: string, data: IEditableRepoData}) => {
-    const response = await sendUpdateRepo(data.token, data.owner, data.data)
+export const updateRepo = createAsyncThunk('github/updateRepo', async (data: {token: string, owner: string, mock: boolean, data: IEditableRepoData}) => {
+    const response = await (data.mock ? fakeApi.sendUpdateRepo(data.token, data.owner, data.data) : sendUpdateRepo(data.token, data.owner, data.data))
     if (response.ok) {
         return await response.json();
     }
@@ -194,8 +188,8 @@ export const updateRepo = createAsyncThunk('github/updateRepo', async (data: {to
     throw new Error(error.message);
 });
 
-export const deleteRepo = createAsyncThunk('github/deleteRepo', async (data: {token: string, owner: string, data: IEditableRepoData}) => {
-    const response = await sendDeleteRepo(data.token, data.owner, data.data)
+export const deleteRepo = createAsyncThunk('github/deleteRepo', async (data: {token: string, owner: string, mock: boolean, data: IEditableRepoData}) => {
+    const response = await (data.mock ? fakeApi.sendDeleteRepo(data.token, data.owner, data.data) : sendDeleteRepo(data.token, data.owner, data.data))
     if (response.ok) {
         return;
     }

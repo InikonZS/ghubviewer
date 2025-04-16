@@ -31,3 +31,8 @@ export interface IEditableRepoData{
     private: boolean,
     description: string,
 }
+
+export interface IUserInfo{
+    avatar_url: string,
+    login: string
+}

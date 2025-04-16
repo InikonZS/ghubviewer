@@ -94,3 +94,14 @@
 .AuthPage_title{
 
 }
+
+.AuthPage_mockLogin{
+    cursor: pointer;
+    text-decoration: underline;
+    color: #6b6bff;
+    font-size: 16px;
+}
+
+.AuthPage_mockLogin:hover{
+    color: #9191ff;
+}

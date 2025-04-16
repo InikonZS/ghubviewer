@@ -151,6 +151,11 @@
     margin-left: -7px;
 }
 
+.RepoItem_action--force{
+    background-image: linear-gradient(90deg, #d32c7d, #ff7e91);
+}
+
 .RepoItem_action:hover{
     background-position: 100%;
 }
+

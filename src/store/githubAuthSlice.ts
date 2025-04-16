@@ -1,19 +1,32 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { IUserInfo } from "../types/repo";
+import { sendLogin } from "../api/github";
+import { sendLogin as sendMockLogin } from "../api/fakeApi";
 
-export const githubAuthSlice = createSlice({
-    name: 'counter',
-    initialState: {
+const initialState: {
+    userInfo: IUserInfo,
+    authError: string,
+    loading: boolean,
+    token: string,
+    mockLogin: boolean,
+} = {
       userInfo: null,
       authError: null,
       loading: false,
       token: '',
-    },
+      mockLogin: false
+    }
+
+export const githubAuthSlice = createSlice({
+    name: 'counter',
+    initialState: initialState,
     reducers: {
       logout: (state=>{
         state.loading = false;
         state.userInfo = null;
         state.authError = null;
         state.token = '';
+        state.mockLogin = false;
       })
     },
     extraReducers: (builder)=>{
@@ -28,7 +41,8 @@ export const githubAuthSlice = createSlice({
         state.loading = false;
       });
       builder.addCase(authGithubByPersonalToken.pending, (state, action) => {
-        state.token = action.meta.arg;
+        state.token = action.meta.arg.token;
+        state.mockLogin = action.meta.arg.mockLogin;
         state.userInfo = null;
         state.authError = null;
         state.loading = true;
@@ -36,15 +50,8 @@ export const githubAuthSlice = createSlice({
     }
   });
   
-  export const authGithubByPersonalToken = createAsyncThunk('github/auth', async (token: string)=>{
-    const response = await fetch('https://api.github.com/user', {
-      method: 'GET',
-      headers: {
-        'X-GitHub-Api-Version': '2022-11-28',
-        'Authorization': `token ${token}`,
-        'Content-Type': 'application/json',
-      }
-    });
+  export const authGithubByPersonalToken = createAsyncThunk('github/auth', async (data:{token: string, mockLogin: boolean})=>{
+    const response = await (data.mockLogin ? sendMockLogin(data.token) : sendLogin(data.token));
     if (response.ok){
       return await response.json();
     }

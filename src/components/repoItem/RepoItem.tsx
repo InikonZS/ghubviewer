@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { MainButton } from "../common/Common";
 import { IRepoData } from "../../types/repo";
 import { useAppDispatch } from "../../store/rootStore";
@@ -7,11 +7,13 @@ import "./RepoItem.css";
 
 interface IRepoItemProps {
     onEdit: ()=>void;
-    onDelete: ()=>void;
+    onDelete: (force: boolean)=>void;
     repo: IRepoData
 }
 
 export const RepoItem = ({repo, onDelete, onEdit}: IRepoItemProps)=>{
+    const [forceDelete, setForceDelete] = useState(false);
+
     const dispatch = useAppDispatch();
     useEffect(()=>{
         if (['ready', 'deletePending', 'updatePending', 'createPending'].includes(repo.clientStatus)){
@@ -19,11 +21,31 @@ export const RepoItem = ({repo, onDelete, onEdit}: IRepoItemProps)=>{
         }
         const tid = setTimeout(()=>{
             dispatch(githubReposSlice.actions.confirmRepoOperation(repo.name));
-        }, 5000);
+        }, 1000);
         return ()=>{
             clearTimeout(tid);
         }
     }, [repo.clientStatus]);
+    
+    useEffect(()=>{
+        const handler = (e: KeyboardEvent)=>{
+            if (e.code == 'ControlLeft'){
+               setForceDelete(true); 
+            }
+        }
+        const handlerUp = (e: KeyboardEvent)=>{
+            if (e.code == 'ControlLeft'){
+                setForceDelete(false); 
+             }
+        }
+        window.addEventListener('keydown', handler);
+        window.addEventListener('keyup', handlerUp); 
+        return ()=>{
+            window.removeEventListener('keydown', handler);
+            window.removeEventListener('keyup', handlerUp);
+        }
+    }, [])
+
     return <div className={`RepoItem_collapser RepoItem_status--${repo.clientStatus}`}>
         <div className={`RepoItem_collapser_contentWrap`}>
         <div className={`RepoItem`}>
@@ -56,10 +78,10 @@ export const RepoItem = ({repo, onDelete, onEdit}: IRepoItemProps)=>{
         </div>
         <div className="RepoItem_actionList">
             <MainButton className="RepoItem_action" onClick={()=>{
-                onEdit()
+                if (repo.clientStatus == 'ready') {onEdit()}
             }}>Edit</MainButton>
-            <MainButton className="RepoItem_action" onClick={()=>{
-                onDelete()
+            <MainButton className={`RepoItem_action ${forceDelete ? 'RepoItem_action--force' : ''}`} onClick={()=>{
+                if (repo.clientStatus == 'ready') {onDelete(forceDelete)}
             }}>Delete</MainButton>
         </div>
     </div>

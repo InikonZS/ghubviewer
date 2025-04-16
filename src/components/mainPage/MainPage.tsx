@@ -12,7 +12,7 @@ import { IRepoData } from "../../types/repo";
 
 export const MainPage = ()=>{
     const dispatch = useAppDispatch();
-    const {userInfo, authError, loading, token} = useAppSelector(state=>state.githubAuth);
+    const {userInfo, authError, loading, token, mockLogin} = useAppSelector(state=>state.githubAuth);
     const {repos, error: reposError, loading: reposLoading} = useAppSelector(state=>state.githubRepos.getUserRepos);
     const [editRepoItem, setEditRepoItem] = useState<IRepoData>(null);
     const [showEditRepoPopup, setShowEditRepoPopup] = useState<boolean>(false);
@@ -20,7 +20,7 @@ export const MainPage = ()=>{
 
     useEffect(()=>{
         if (userInfo){
-            dispatch(getUserRepos(token));
+            dispatch(getUserRepos({token: token, mock: mockLogin}));
             dispatch(routesSlice.actions.navigate('main'));
         }
     }, [userInfo]);
@@ -45,6 +45,10 @@ export const MainPage = ()=>{
                 setEditRepoItem(null);
             }}>Create repo</button>
         </div>
+
+        {reposError && <div>{reposError}</div>}
+        {reposLoading && <div>loading repos...</div>}
+        {repos && repos.length == 0 && <div>There are no repos. Try to create new one.</div>}
         <GoodScroll>
             {repos && <div className="MainPage_repoList">{repos.map((repo)=><RepoItem 
                 key={repo.name}
@@ -53,29 +57,32 @@ export const MainPage = ()=>{
                     setShowEditRepoPopup(true);
                     setEditRepoItem(repo)
                 }}
-                onDelete={()=>{
-                    setShowConfirmDeletePopup(true);
-                    setEditRepoItem(repo)
+                onDelete={(force)=>{
+                    if (force){
+                        dispatch(deleteRepo({token, owner: repo.owner.login, data: repo, mock: mockLogin}));
+                    } else {
+                        setShowConfirmDeletePopup(true);
+                        setEditRepoItem(repo)
+                    }
                 }}
             ></RepoItem>)}</div>}
         </GoodScroll>
-        {reposError &&  <div>{reposError}</div>}
-        {reposLoading && <div>loading repos...</div>}
+        
         {showEditRepoPopup && <EditRepoPopup 
             repoData={editRepoItem}
             onClose={()=>setShowEditRepoPopup(false)} 
             onSave={(data)=>{
                 if (editRepoItem){
-                    dispatch(updateRepo({token, owner: editRepoItem.owner.login, data}));
+                    dispatch(updateRepo({token, owner: editRepoItem.owner.login, data, mock: mockLogin}));
                 } else {
-                    dispatch(createRepo({token, owner: userInfo.login, data}));
+                    dispatch(createRepo({token, owner: userInfo.login, data, mock: mockLogin}));
                 }
             }}
         ></EditRepoPopup>}
         {showConfirmDeletePopup && <DeleteRepoPopup
             repoData={editRepoItem} 
             onOk={()=>{
-                dispatch(deleteRepo({token, owner: editRepoItem.owner.login, data: editRepoItem}));
+                dispatch(deleteRepo({token, owner: editRepoItem.owner.login, data: editRepoItem, mock: mockLogin}));
                 setShowConfirmDeletePopup(false);
                 }
             }

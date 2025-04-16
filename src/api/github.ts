@@ -1,3 +1,15 @@
+export const sendGetRepoList = async (token:string) => {
+    const response = await fetch('https://api.github.com/user/repos', {
+        method: 'GET',
+        headers: {
+            'X-GitHub-Api-Version': '2022-11-28',
+            'Authorization': `token ${token}`,
+            'Content-Type': 'application/json',
+        }
+    });
+    return response
+}
+
 export const sendCreateRepo = async (token:string, owner: string, data: {name: string, description: string, private: boolean}) => {
     const response = await fetch('https://api.github.com/user/repos', {
         method: 'POST',
@@ -41,3 +53,22 @@ export const sendDeleteRepo = async (token:string, owner: string, data: {name: s
     return response;
 }
 
+export const sendLogin = async (token:string) => {
+    const response = await fetch('https://api.github.com/user', {
+        method: 'GET',
+        headers: {
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Authorization': `token ${token}`,
+        'Content-Type': 'application/json',
+        }
+    });
+    return response;
+}
+
+export default {
+    sendCreateRepo,
+    sendDeleteRepo,
+    sendUpdateRepo,
+    sendGetRepoList,
+    sendLogin
+}
