@@ -1,11 +1,12 @@
 import React from "react";
 import { MainButton } from "../common/Common";
+import { IRepoData } from "../../types/repo";
 import "./RepoItem.css";
 
 interface IRepoItemProps {
     onEdit: ()=>void;
     onDelete: ()=>void;
-    repo: any
+    repo: IRepoData
 }
 
 export const RepoItem = ({repo, onDelete, onEdit}: IRepoItemProps)=>{

@@ -7,12 +7,13 @@ import { RepoItem } from "../repoItem/RepoItem";
 import { EditRepoPopup } from "../editRepoPopup/EditRepoPopup";
 import { DeleteRepoPopup } from "../deleteRepoPopup/DeleteRepoPopup";
 import "./MainPage.css";
+import { IRepoData } from "../../types/repo";
 
 export const MainPage = ()=>{
     const dispatch = useAppDispatch();
     const {userInfo, authError, loading, token} = useAppSelector(state=>state.githubAuth);
     const {repos, error: reposError, loading: reposLoading} = useAppSelector(state=>state.githubRepos.getUserRepos);
-    const [editRepoItem, setEditRepoItem] = useState<any>(null);
+    const [editRepoItem, setEditRepoItem] = useState<IRepoData>(null);
     const [showEditRepoPopup, setShowEditRepoPopup] = useState<boolean>(false);
     const [showConfirmDeletePopup, setShowConfirmDeletePopup] = useState<boolean>(false);
 
@@ -44,7 +45,7 @@ export const MainPage = ()=>{
             }}>Create repo</button>
         </div>
 
-        {repos && <div className="MainPage_repoList">{repos.map((repo: any)=><RepoItem 
+        {repos && <div className="MainPage_repoList">{repos.map((repo)=><RepoItem 
             key={repo.name}
             repo={repo}
             onEdit={()=>{

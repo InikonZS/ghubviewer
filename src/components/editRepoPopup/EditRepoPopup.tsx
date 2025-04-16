@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react"
 import { MainButton, PopupShadow, PopupWrapper } from "../common/Common";
 import "./EditRepoPopup.css";
+import { IEditableRepoData } from "../../types/repo";
 
 interface IEditRepoPopupProps{
     onClose: ()=>void,
-    onSave: (data: any)=>void,
-    repoData?: any
+    onSave: (data: IEditableRepoData)=>void,
+    repoData?: IEditableRepoData
 }
 
 export const EditRepoPopup = ({onClose, onSave, repoData}: IEditRepoPopupProps)=>{
@@ -43,7 +44,7 @@ export const EditRepoPopup = ({onClose, onSave, repoData}: IEditRepoPopupProps)=
         }
     }
 
-    const handleOk = (data: any)=>{
+    const handleOk = (data: IEditableRepoData)=>{
         if (popupState == 'ready'){
             setPopupState('fadeOut');
             onSave(data);

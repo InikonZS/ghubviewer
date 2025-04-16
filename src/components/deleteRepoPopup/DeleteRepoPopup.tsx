@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react"
 import { MainButton, PopupShadow, PopupTitle, PopupWrapper } from "../common/Common";
 import "./DeleteRepoPopup.css";
+import { IEditableRepoData } from "../../types/repo";
 
 interface IDeleteRepoPopupProps{
     onClose: ()=>void,
     onOk: ()=>void,
-    repoData?: any
+    repoData?: IEditableRepoData
 }
 
 export const DeleteRepoPopup = ({onClose, onOk, repoData}: IDeleteRepoPopupProps)=>{

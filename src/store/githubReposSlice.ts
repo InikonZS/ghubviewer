@@ -1,30 +1,52 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { sendCreateRepo, sendDeleteRepo, sendUpdateRepo } from "../api/github";
+import { IEditableRepoData, IRepoData } from "../types/repo";
+
+const initialState: {
+    getUserRepos: {
+        repos: IRepoData[],
+        error: string,
+        loading: boolean
+    },
+    createRepo: {
+        response: IRepoData,
+        error: string,
+        loading: boolean
+    },
+    updateRepo: {
+        response: IRepoData,
+        error: string,
+        loading: boolean
+    },
+    deleteRepo: {
+        error: string,
+        loading: boolean
+    },
+} = {
+    getUserRepos: {
+        repos: null,
+        error: null,
+        loading: false
+    },
+    createRepo: {
+        response: null,
+        error: null,
+        loading: false
+    },
+    updateRepo: {
+        response: null,
+        error: null,
+        loading: false
+    },
+    deleteRepo: {
+        error: null,
+        loading: false
+    }
+}
 
 export const githubReposSlice = createSlice({
     name: 'counter',
-    initialState: {
-        getUserRepos: {
-            repos: null,
-            error: null,
-            loading: false
-        },
-        createRepo: {
-            response: null,
-            error: null,
-            loading: false
-        },
-        updateRepo: {
-            response: null,
-            error: null,
-            loading: false
-        },
-        deleteRepo: {
-            response: null,
-            error: null,
-            loading: false
-        }
-    },
+    initialState: initialState,
     reducers: {
 
     },
@@ -64,25 +86,22 @@ export const githubReposSlice = createSlice({
 
         
         builder.addCase(deleteRepo.fulfilled, (state, action) => {
-            state.deleteRepo.response = action.payload;
-            state.getUserRepos.repos = state.getUserRepos.repos.filter((it: any)=>it.name != action.meta.arg.data.name);
+            state.getUserRepos.repos = state.getUserRepos.repos.filter((it)=>it.name != action.meta.arg.data.name);
             state.deleteRepo.error = null;
             state.deleteRepo.loading = false;
         });
         builder.addCase(deleteRepo.rejected, (state, action) => {
-            state.deleteRepo.response = null;
             state.deleteRepo.error = action.error.message;
             state.deleteRepo.loading = false;
         });
         builder.addCase(deleteRepo.pending, (state, action) => {
-            state.deleteRepo.response = null;
             state.deleteRepo.error = null;
             state.deleteRepo.loading = true;
         });
 
         builder.addCase(updateRepo.fulfilled, (state, action) => {
             state.updateRepo.response = action.payload;
-            state.getUserRepos.repos = state.getUserRepos.repos.map((it: any)=>it.name == action.payload.name ? action.payload : it);
+            state.getUserRepos.repos = state.getUserRepos.repos.map((it)=>it.name == action.payload.name ? action.payload : it);
             state.updateRepo.error = null;
             state.updateRepo.loading = false;
         });
@@ -117,7 +136,7 @@ export const getUserRepos = createAsyncThunk('github/getRepos', async (token: st
     throw new Error(error.message);
 });
 
-export const createRepo = createAsyncThunk('github/createRepo', async (data: {token: string, data: any}) => {
+export const createRepo = createAsyncThunk('github/createRepo', async (data: {token: string, data: IEditableRepoData}) => {
     const response = await sendCreateRepo(data.token, data.data)
     if (response.ok) {
         return await response.json();
@@ -128,7 +147,7 @@ export const createRepo = createAsyncThunk('github/createRepo', async (data: {to
     throw new Error(error.message);
 });
 
-export const updateRepo = createAsyncThunk('github/updateRepo', async (data: {token: string, owner: string, data: any}) => {
+export const updateRepo = createAsyncThunk('github/updateRepo', async (data: {token: string, owner: string, data: IEditableRepoData}) => {
     const response = await sendUpdateRepo(data.token, data.owner, data.data)
     if (response.ok) {
         return await response.json();
@@ -139,7 +158,7 @@ export const updateRepo = createAsyncThunk('github/updateRepo', async (data: {to
     throw new Error(error.message);
 });
 
-export const deleteRepo = createAsyncThunk('github/deleteRepo', async (data: {token: string, owner: string, data: any}) => {
+export const deleteRepo = createAsyncThunk('github/deleteRepo', async (data: {token: string, owner: string, data: IEditableRepoData}) => {
     const response = await sendDeleteRepo(data.token, data.owner, data.data)
     if (response.ok) {
         return;
