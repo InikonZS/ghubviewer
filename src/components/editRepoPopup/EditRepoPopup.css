@@ -111,6 +111,10 @@
     outline: none;
 }
 
+.EditRepoPopup_form_block_input:disabled{
+    opacity: 0.5;
+}
+
 .EditRepoPopup_actionList{
     display: flex;
     gap: 10px;

@@ -6,8 +6,8 @@ import "./style.css";
 
 export function App(){
     return <Provider store={rootStore}>
-        <div className="app_wrapper">
+        <>
             <Routes></Routes>
-        </div>
+        </>
     </Provider>
 }

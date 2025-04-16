@@ -61,11 +61,11 @@ export const EditRepoPopup = ({onClose, onSave, repoData}: IEditRepoPopupProps)=
             <div className="EditRepoPopup_form">
                 <div className="EditRepoPopup_form_block">
                     <span className="EditRepoPopup_form_block_title">name</span>
-                    <input className="EditRepoPopup_form_block_input" value={repoName} onChange={(e)=>{setRepoName(e.target.value)}}></input>
+                    <input className="EditRepoPopup_form_block_input" disabled={!!repoData} value={repoName} onChange={(e)=>{setRepoName(e.target.value)}}></input>
                 </div>
                 <div className="EditRepoPopup_form_block">
                     <span className="EditRepoPopup_form_block_title">description</span>
-                    <textarea className="EditRepoPopup_form_block_input" style={{height: '80px'}} value={repoDescription} onChange={(e)=>{setRepoDescription(e.target.value)}}></textarea>
+                    <textarea className="scroll EditRepoPopup_form_block_input" style={{height: '80px'}} value={repoDescription} onChange={(e)=>{setRepoDescription(e.target.value)}}></textarea>
                 </div>
                 <div className="EditRepoPopup_form_block EditRepoPopup_privateSet">
                     <CheckBox onCheck={(value)=>{setIsPrivate(value)}} checked={isPrivate} label={

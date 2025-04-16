@@ -25,6 +25,7 @@ export const RepoItem = ({repo, onDelete, onEdit}: IRepoItemProps)=>{
         }
     }, [repo.clientStatus]);
     return <div className={`RepoItem_collapser RepoItem_status--${repo.clientStatus}`}>
+        <div className={`RepoItem_collapser_contentWrap`}>
         <div className={`RepoItem`}>
         <div className="RepoItem_statusBlock">{repo.clientStatus}</div>
         <div className="RepoItem_repoInfo">
@@ -61,6 +62,7 @@ export const RepoItem = ({repo, onDelete, onEdit}: IRepoItemProps)=>{
                 onDelete()
             }}>Delete</MainButton>
         </div>
+    </div>
     </div>
     </div> 
 }

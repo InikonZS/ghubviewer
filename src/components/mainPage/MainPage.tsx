@@ -6,6 +6,7 @@ import { routesSlice } from "../../store/routesSlice";
 import { RepoItem } from "../repoItem/RepoItem";
 import { EditRepoPopup } from "../editRepoPopup/EditRepoPopup";
 import { DeleteRepoPopup } from "../deleteRepoPopup/DeleteRepoPopup";
+import { GoodScroll } from "../common/GoodScroll";
 import "./MainPage.css";
 import { IRepoData } from "../../types/repo";
 
@@ -44,19 +45,20 @@ export const MainPage = ()=>{
                 setEditRepoItem(null);
             }}>Create repo</button>
         </div>
-
-        {repos && <div className="MainPage_repoList">{repos.map((repo)=><RepoItem 
-            key={repo.name}
-            repo={repo}
-            onEdit={()=>{
-                setShowEditRepoPopup(true);
-                setEditRepoItem(repo)
-            }}
-            onDelete={()=>{
-                setShowConfirmDeletePopup(true);
-                setEditRepoItem(repo)
-            }}
-        ></RepoItem>)}</div>}
+        <GoodScroll>
+            {repos && <div className="MainPage_repoList">{repos.map((repo)=><RepoItem 
+                key={repo.name}
+                repo={repo}
+                onEdit={()=>{
+                    setShowEditRepoPopup(true);
+                    setEditRepoItem(repo)
+                }}
+                onDelete={()=>{
+                    setShowConfirmDeletePopup(true);
+                    setEditRepoItem(repo)
+                }}
+            ></RepoItem>)}</div>}
+        </GoodScroll>
         {reposError &&  <div>{reposError}</div>}
         {reposLoading && <div>loading repos...</div>}
         {showEditRepoPopup && <EditRepoPopup 

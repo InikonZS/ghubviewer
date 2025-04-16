@@ -10,7 +10,7 @@ export const Routes = ()=>{
         'auth': AuthPage
     }
     const PageComponent = routes[pageName as keyof typeof routes] || (()=><div>404</div>);
-    return <div className="app_wrapper">
+    return <>
         <PageComponent></PageComponent>
-    </div>
+    </>
 }

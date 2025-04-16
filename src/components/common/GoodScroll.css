@@ -1,0 +1,85 @@
+.GoodScroll{
+    /*border: 1px solid;*/
+    /*flex-shrink: 0;*/
+    height: 100%;
+    --scrollSize: 10px;
+    --additionalShift: 17px;
+    --gradientColor: #000000;
+    --gradientEmptyColor: #00000000;
+    position: relative;
+    overflow: hidden;
+
+    max-width: 638px;
+    width: 100%;
+}
+
+.GoodScroll_relativeSizer{
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.GoodScroll_realScroll{
+    overflow: scroll;
+    height: calc(100% + var(--scrollSize) + var(--additionalShift));
+    width: calc(100% + var(--scrollSize) + var(--additionalShift));
+}
+
+.GoodScroll_content_zero{
+    height: calc(100% - 0px);
+    width: calc(100% - 0px);
+}
+
+.GoodScroll_content{
+    padding-right: var(--additionalShift);
+    padding-bottom: var(--additionalShift);
+}
+
+.GoodScroll_visualScroll{
+    position: absolute;
+    height: 100%;
+    top: 0px;
+    right: 0;
+    width: 11px;
+    padding: 10px 0px;
+    opacity: 0.0;
+    transition: opacity 1000ms;
+}
+
+.GoodScroll_visualScroll_bar{
+    position: relative;
+    user-select: none;
+    top: 17.5422%;
+    height: 49.3976%;
+    padding: 0px 2px;
+}
+
+.GoodScroll_visualScroll_bar_colored{
+    border-radius: 5px;
+    background-color: rgb(153, 153, 153);
+    height: 100%;
+    width: 100%;
+}
+
+.GoodScroll_gradient{
+    position: absolute;
+    height: 10px;
+    width: 100%;
+}
+
+.GoodScroll_gradient_top{
+    top: 0;
+    left: 0;
+    background-image: linear-gradient(180deg, var(--gradientColor) 0%, var(--gradientEmptyColor) 100%);
+}
+
+.GoodScroll_gradient_bottom{
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(0deg, var(--gradientColor) 0%, var(--gradientEmptyColor) 100%);
+}
+
+.GoodScroll--hover .GoodScroll_visualScroll{
+    opacity: 1;
+    transition: opacity 300ms;
+}

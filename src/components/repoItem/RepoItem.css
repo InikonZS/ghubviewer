@@ -7,7 +7,10 @@
     animation: none;
 }
 
-
+.RepoItem_collapser_contentWrap{
+    overflow: hidden;
+    animation: none;
+}
 
 .RepoItem{
     width: 100%;
@@ -28,8 +31,13 @@
     right: 0;
     top: 0;
     font-size: 12px;
-    color: #2f2f70;
+    color: #9797ff;
     padding: 5px;
+    transition-duration: 200ms;
+}
+
+.RepoItem_status--ready .RepoItem_statusBlock{
+    color: transparent;
 }
 
 .RepoItem_status--deletePending{
